@@ -1,0 +1,4 @@
+google-adk
+google-cloud-aiplatform[adk,agent_engines]
+requests
+google-cloud-modelarmor

@@ -24,6 +24,21 @@ Each notebook builds on the previous one, layering in new agentic concepts.
 | `challenge2_weather_agent.ipynb` | Adds Model Armor safety checks, callbacks (before/after model and tool calls), and logging. |
 | `challenge3_weather_agent.ipynb` | Composes the weather capabilities into a multi-agent workflow. |
 | `challenge4_agent_workflow.ipynb` | Orchestrates multiple specialized agents (producer, screenwriter loop, script compiler, budget) into a sequential production pipeline coordinated by a root agent. |
+| `challenge5_weather_agent.ipynb` | Deploys the challenge 3 multi-agent weather system to Agent Platform via `agent_engines.create()`. Agent logic lives in the `weather_agent/` package. |
+
+## Deployable Agent Package
+
+Challenge 5 uses a modular layout so the agent can be tested locally and deployed without cloudpickle fragility:
+
+```text
+weather_agent/
+├── __init__.py
+├── agent.py
+├── requirements.txt
+└── .env.example
+```
+
+The notebook imports `root_agent` and `app` from `weather_agent`, tests locally with `AdkApp`, then deploys with `extra_packages=["weather_agent"]`.
 
 ## Key Concepts Covered
 
@@ -33,6 +48,7 @@ Each notebook builds on the previous one, layering in new agentic concepts.
 - Lifecycle callbacks and logging for observability
 - Multi-agent orchestration: loop agents, sequential pipelines, and root coordinators
 - Shared session state across agents
+- Agent deployment to Agent Platform with `agent_engines.create()`
 
 ## Running the Notebooks
 
