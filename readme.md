@@ -6,10 +6,6 @@ concepts of agent development, from a single tool-using agent to orchestrated
 multi-agent workflows, and culminate in a hardened, deployed production-minded
 assistant.
 
-The full task specification is in
-[Agentic AI with the Google Agent Development Kit (ADK): Skills Validation Workshop.pdf](Agentic%20AI%20with%20the%20Google%20Agent%20Development%20Kit%20%28ADK%29_%20Skills%20Validation%20Workshop.pdf),
-which is the source of truth for what each challenge required.
-
 ## Tech Stack
 
 - **Google Agent Development Kit (ADK)** - the agent framework used throughout
