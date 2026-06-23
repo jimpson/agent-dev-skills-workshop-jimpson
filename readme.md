@@ -11,8 +11,10 @@ multi-agent workflows.
 - **Vertex AI / Gemini** - the models powering the agents (e.g. `gemini-2.5-flash`)
 - **Google Cloud Agent Engines** - runtime for deploying and running agents
 - **Model Armor** - safety guardrails for agent inputs and outputs
+- **Google Cloud Logging** - structured audit trail for ReadyNow! (Challenge 6)
+- **Gradio** - lightweight chat UI for the deployed ReadyNow! agent
 - **LiteLLM** - model abstraction layer
-- External tools: Google Maps Geocoding API and the US National Weather Service API
+- External tools: Google Maps Geocoding/Directions APIs and the US National Weather Service API
 
 ## Challenges
 
@@ -25,6 +27,7 @@ Each notebook builds on the previous one, layering in new agentic concepts.
 | `challenge3_weather_agent.ipynb` | Composes the weather capabilities into a multi-agent workflow. |
 | `challenge4_agent_workflow.ipynb` | Orchestrates multiple specialized agents (producer, screenwriter loop, script compiler, budget) into a sequential production pipeline coordinated by a root agent. |
 | `challenge5_weather_agent.ipynb` | Deploys the challenge 3 multi-agent weather system to Agent Platform via `agent_engines.create()`. Agent logic lives in the `weather_agent/` package. |
+| `challenge6_readynow.ipynb` | Project ReadyNow! - a hardened FEMA Emergency Preparedness assistant. A thin notebook that syncs the repo, deploys the `readynow_agent/` package to Agent Platform, and launches a Gradio chat UI. All agent logic is code-first in `readynow_agent/`. |
 
 ## Deployable Agent Package
 
@@ -39,6 +42,39 @@ weather_agent/
 ```
 
 The notebook imports `root_agent` and `app` from `weather_agent`, tests locally with `AdkApp`, then deploys with `extra_packages=["weather_agent"]`.
+
+## Challenge 6: Project ReadyNow! (FEMA)
+
+The capstone case study is a hardened, production-minded FEMA Emergency
+Preparedness assistant. Agent logic is fully code-first in the `readynow_agent/`
+package; the notebook only orchestrates sync, deploy, and UI launch.
+
+```text
+readynow_agent/
+├── __init__.py
+├── config.py            # env handling, model tiers, low-temp generation config
+├── logging_config.py    # structured Cloud Logging + audit() helper
+├── tools.py             # geocoding, NWS forecast + active alerts, Maps routes
+├── safety.py            # Model Armor (strict), mission scope, US-location checks
+├── callbacks.py         # before/after model + tool logging and validation
+├── agent.py             # specialists, Critic+Refiner pipeline, root coordinator
+├── requirements.txt
+└── .env.example
+
+create_armor_template.py # codifies the strict readynow-armor Model Armor template
+deploy_readynow.py       # agent_engines.create() with version-pinned requirements
+run_local_demo.py        # local scenario tests (the rubric's test code)
+test_deployed.py         # smoke test against the deployed Agent Engine
+ui_app.py                # lightweight Gradio chat UI with a public share link
+tests/test_units.py      # unit tests for tools + safety (externals mocked)
+docs/readynow_architecture.md  # architecture diagram + design
+```
+
+Highlights: tiered models (pro for orchestration/validation, flash for
+specialists), strict Model Armor on every agent input and output, a Critic +
+Refiner validation pipeline to suppress hallucinations, structured audit logging
+at all lifecycle stages, and deploy-time version pinning to avoid build-vs-runtime
+mismatches. See `docs/readynow_architecture.md` for details.
 
 ## Key Concepts Covered
 
